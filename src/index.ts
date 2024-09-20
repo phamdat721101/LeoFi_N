@@ -1,7 +1,7 @@
 import { Telegraf, session } from 'telegraf';
 import { message } from 'telegraf/filters';
 import { BotContext, Message } from './types';
-import { handlePortfolio, addToPortfolio, handleMarketAnalysis, handlePerformance, handleOnboarding } from './handlers';
+import { handlePortfolio, addToPortfolio, handleMarketAnalysis, handlePerformance, handleOnboarding, handleMarketplace } from './handlers';
 import { handleDeFiLiquidity, handleAddLiquidity, handleRemoveLiquidity, handleRebalance } from './handlers/deFiLiquidity';
 
 const bot = new Telegraf<BotContext>(process.env.BOT_TOKEN || '7380070505:AAHh5Fa9-AoNVgwi9BoorGe_RLkfBQohTlU');
@@ -23,7 +23,7 @@ bot.command('start', (ctx) => {
       keyboard: [
         [{ text: 'Portfolio' }, { text: 'Market Analysis' }],
         [{ text: 'Performance' }, { text: 'DeFi Liquidity' }],
-        [{ text: 'Onboarding' }]
+        [{ text: 'Onboarding' }, { text: 'Marketplace' }]
       ],
       resize_keyboard: true,
       one_time_keyboard: false
@@ -87,6 +87,7 @@ bot.hears('DeFi Liquidity', handleDeFiLiquidity);
 bot.hears('Add Liquidity', handleAddLiquidity);
 bot.hears('Remove Liquidity', handleRemoveLiquidity);
 bot.hears('Rebalance Portfolio', handleRebalance);
+bot.hears('Marketplace', handleMarketplace);
 
 bot.hears('Back to Main Menu', (ctx) => {
   ctx.reply('What would you like to do?', {
@@ -94,12 +95,32 @@ bot.hears('Back to Main Menu', (ctx) => {
       keyboard: [
         [{ text: 'Portfolio' }, { text: 'Market Analysis' }],
         [{ text: 'Performance' }, { text: 'DeFi Liquidity' }],
-        [{ text: 'Onboarding' }]
+        [{ text: 'Onboarding' }, { text: 'Marketplace' }]
       ],
       resize_keyboard: true,
       one_time_keyboard: false
     }
   });
+});
+
+bot.action('view_signals', async (ctx) => {
+  await ctx.answerCbQuery();
+  await ctx.reply('To view and copy signals, please visit our web app: https://www.leofi.xyz/marketplace?tab=signals');
+});
+
+bot.action('view_etfs', async (ctx) => {
+  await ctx.answerCbQuery();
+  await ctx.reply('To view and invest in ETFs, please visit our web app: https://www.leofi.xyz/marketplace?tab=etfs');
+});
+
+bot.action('create_signal', async (ctx) => {
+  await ctx.answerCbQuery();
+  await ctx.reply('To create a new signal, please visit our web app: https://www.leofi.xyz/marketplace?action=create_signal');
+});
+
+bot.action('create_etf', async (ctx) => {
+  await ctx.answerCbQuery();
+  await ctx.reply('To create a new ETF, please visit our web app: https://www.leofi.xyz/marketplace?action=create_etf');
 });
 
 bot.on(message('text'), async (ctx) => {
