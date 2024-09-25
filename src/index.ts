@@ -23,7 +23,7 @@ bot.command('start', (ctx) => {
       keyboard: [
         [{ text: 'Portfolio' }, { text: 'Market Analysis' }],
         [{ text: 'Performance' }, { text: 'DeFi Liquidity' }],
-        [{ text: 'Onboarding' }, { text: 'Marketplace' }]
+        [{ text: 'Yield Assistant' }]
       ],
       resize_keyboard: true,
       one_time_keyboard: false
@@ -82,12 +82,12 @@ function setupPortfolioHandlers(bot: Telegraf<BotContext>) {
 bot.hears('Portfolio', handlePortfolio);
 bot.hears('Market Analysis', handleMarketAnalysis);
 bot.hears('Performance', handlePerformance);
-bot.hears('Onboarding', handleOnboarding);
+// bot.hears('Onboarding', handleOnboarding);
 bot.hears('DeFi Liquidity', handleDeFiLiquidity);
 bot.hears('Add Liquidity', handleAddLiquidity);
 bot.hears('Remove Liquidity', handleRemoveLiquidity);
 bot.hears('Rebalance Portfolio', handleRebalance);
-bot.hears('Marketplace', handleMarketplace);
+bot.hears('Yield Assistant', handleMarketplace);
 
 bot.hears('Back to Main Menu', (ctx) => {
   ctx.reply('What would you like to do?', {
@@ -95,7 +95,7 @@ bot.hears('Back to Main Menu', (ctx) => {
       keyboard: [
         [{ text: 'Portfolio' }, { text: 'Market Analysis' }],
         [{ text: 'Performance' }, { text: 'DeFi Liquidity' }],
-        [{ text: 'Onboarding' }, { text: 'Marketplace' }]
+        [ { text: 'Yield Assistant' }]
       ],
       resize_keyboard: true,
       one_time_keyboard: false

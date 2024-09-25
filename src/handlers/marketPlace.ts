@@ -2,30 +2,31 @@ import { BotContext } from '../types';
 
 export async function handleMarketplace(ctx: BotContext) {
   const message = `
-Welcome to the LeoFi Marketplace! 🚀
+Welcome to the LeoFi Yield Assistant! 🌾
 
-Here you can access our Signal & ETF Marketplace, where you can:
+Here you can access our Yield Optimization Marketplace, where you can:
 
-• Copy Signals from top performers
-• Invest in On-Chain ETFs
-• Create your own Signals or ETFs
+• Discover the best staking and farming opportunities from top DeFi protocols
+• Compare yields from liquidity mining pools
+• Invest in on-chain ETFs tailored for DeFi yields
+• Create and manage your custom yield farming strategies
 
 Visit our web app to explore the full functionality:
-🌐 [LeoFi Marketplace](https://www.leofi.xyz/marketplace)
+🌐 LeoFi Yield Assistant (https://www.leofi.xyz/yield-assistant)
 
-What would you like to do?
-  `;
+What would you like to do?`;
 
-  const keyboard = {
-    reply_markup: {
-      inline_keyboard: [
-        [{ text: "View Signals", callback_data: "view_signals" }],
-        [{ text: "View ETFs", callback_data: "view_etfs" }],
-        [{ text: "Create Signal", callback_data: "create_signal" }],
-        [{ text: "Create ETF", callback_data: "create_etf" }],
-      ]
-    }
-  };
+const keyboard = {
+  reply_markup: {
+    inline_keyboard: [
+      [{ text: "View Staking Opportunities", callback_data: "view_staking" }],
+      [{ text: "View Liquidity Mining Pools", callback_data: "view_liquidity_pools" }],
+      [{ text: "Invest in On-Chain ETFs", callback_data: "invest_etfs" }],
+      [{ text: "Create Custom Yield Strategy", callback_data: "create_yield_strategy" }],
+    ]
+  }
+};
+
 
   ctx.session.messages.push({ type: 'bot', content: message });
   await ctx.reply(message, { ...keyboard, parse_mode: 'Markdown' });
