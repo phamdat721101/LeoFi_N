@@ -1,7 +1,7 @@
 import { Telegraf, session } from 'telegraf';
 import { message } from 'telegraf/filters';
 import { BotContext, Message } from './types';
-import { handlePortfolio, addToPortfolio, handleMarketAnalysis, handlePerformance, handleOnboarding, handleMarketplace } from './handlers';
+import { handleYieldAssistant, handlePortfolio, addToPortfolio, handleMarketAnalysis, handlePerformance, handleOnboarding, handleMarketplace } from './handlers';
 import { handleDeFiLiquidity, handleAddLiquidity, handleRemoveLiquidity, handleRebalance } from './handlers/deFiLiquidity';
 
 const bot = new Telegraf<BotContext>(process.env.BOT_TOKEN || '7380070505:AAHh5Fa9-AoNVgwi9BoorGe_RLkfBQohTlU');
@@ -21,7 +21,7 @@ bot.command('start', (ctx) => {
   ctx.reply('Welcome to LeoFi! How can I assist you with your investments today?', {
     reply_markup: {
       keyboard: [
-        [{ text: 'Portfolio' }, { text: 'Market Analysis' }],
+        [{ text: 'Top Portfolio' }, { text: 'Market Analysis' }],
         [{ text: 'Performance' }, { text: 'DeFi Liquidity' }],
         [{ text: 'Yield Assistant' }]
       ],
@@ -55,31 +55,7 @@ function setupPortfolioHandlers(bot: Telegraf<BotContext>) {
   // Add more portfolio-related action handlers as needed
 }
 
-// bot.on(message('text'), async (ctx) => {
-//   const userMessage: Message = { type: 'user', content: ctx.message.text };
-//   ctx.session.messages.push(userMessage);
-
-//   // if (ctx.session.awaitingPortfolioInput) {
-    
-//   // } else {
-//   //   // Handle other types of messages
-//   //   const botResponse: Message = { type: 'bot', content: `You said: ${ctx.message.text}` };
-//   //   ctx.session.messages.push(botResponse);
-//   //   await ctx.reply(botResponse.content);
-//   // }
-
-//   const input = ctx.message.text.split(',');
-//   if (input.length === 3) {
-//     const [asset, amount, buyPrice] = input;
-//     const result = await addToPortfolio(ctx, asset, parseFloat(amount), parseFloat(buyPrice));
-//     ctx.session.awaitingPortfolioInput = false;
-//     await ctx.reply(result);
-//   } else {
-//     await ctx.reply('Invalid input format. Please use: Asset,Amount,BuyPrice');
-//   }
-// });
-
-bot.hears('Portfolio', handlePortfolio);
+bot.hears('Top Portfolio', handlePortfolio);
 bot.hears('Market Analysis', handleMarketAnalysis);
 bot.hears('Performance', handlePerformance);
 // bot.hears('Onboarding', handleOnboarding);
@@ -87,13 +63,13 @@ bot.hears('DeFi Liquidity', handleDeFiLiquidity);
 bot.hears('Add Liquidity', handleAddLiquidity);
 bot.hears('Remove Liquidity', handleRemoveLiquidity);
 bot.hears('Rebalance Portfolio', handleRebalance);
-bot.hears('Yield Assistant', handleMarketplace);
+bot.hears('Yield Assistant', handleYieldAssistant);
 
 bot.hears('Back to Main Menu', (ctx) => {
   ctx.reply('What would you like to do?', {
     reply_markup: {
       keyboard: [
-        [{ text: 'Portfolio' }, { text: 'Market Analysis' }],
+        [{ text: 'Top Portfolio' }, { text: 'Market Analysis' }],
         [{ text: 'Performance' }, { text: 'DeFi Liquidity' }],
         [ { text: 'Yield Assistant' }]
       ],

@@ -7,7 +7,6 @@ export async function handlePortfolio(ctx: BotContext) {
   if (!ctx.session) {
     ctx.session = { messages: [], portfolio: [], awaitingPortfolioInput: false } as SessionData;
   }
-
   // Sample data for createProfile
   const sampleProfileData = {
     name: "John Doe",
@@ -28,37 +27,37 @@ export async function handlePortfolio(ctx: BotContext) {
   ctx.session.messages.push({ type: 'bot', content: portfolioSummary });
   await ctx.reply(portfolioSummary);
 
-  const chartBuffer = await generatePortfolioChart();
-  ctx.session.messages.push({ type: 'chart', content: 'Portfolio Breakdown' });
-  await ctx.replyWithPhoto({ source: chartBuffer });
-
-  const followUp = 'Would you like to see market analysis or manage your investments?';
-  ctx.session.messages.push({ type: 'bot', content: followUp });
-  await ctx.reply(followUp);
-
-  // if (ctx.session.portfolio.length === 0) {
-  //   const addPortfolioMessage = 'You don\'t have any portfolio yet. Would you like to add one?';
-  //   ctx.session.messages.push({ type: 'bot', content: addPortfolioMessage });
-  //   await ctx.reply(addPortfolioMessage, Markup.inlineKeyboard([
-  //     Markup.button.callback('Add Portfolio', 'add_portfolio')
-  //   ]));
-  // } else {
-  //   const portfolioSummary = 'Here\'s a summary of your current portfolio:';
-  //   ctx.session.messages.push({ type: 'bot', content: portfolioSummary });
-  //   await ctx.reply(portfolioSummary);
-
-  //   const chartBuffer = await generatePortfolioChart();
-  //   ctx.session.messages.push({ type: 'chart', content: 'Portfolio Breakdown' });
-  //   await ctx.replyWithPhoto({ source: chartBuffer });
-
-  //   const followUp = 'Would you like to see market analysis or manage your investments?';
-  //   ctx.session.messages.push({ type: 'bot', content: followUp });
-  //   await ctx.reply(followUp, Markup.inlineKeyboard([
-  //     Markup.button.callback('Market Analysis', 'market_analysis'),
-  //     Markup.button.callback('Manage Investments', 'manage_investments'),
-  //     Markup.button.callback('Add to Portfolio', 'add_portfolio')
-  //   ]));
-  // }
+  // const chartBuffer = await generatePortfolioChart();
+  // ctx.session.messages.push({ type: 'chart', content: 'Portfolio Breakdown' });
+  // await ctx.replyWithPhoto({ source: chartBuffer });
+  
+  const tableData = [
+    { profile_name: 'DeFi Master', profit: 45, sector: 'DeFi', link: 'https://www.leofi.xyz/detail/0' },
+    { profile_name: 'SoFi Sage', profit: 30, sector: 'SoFi', link: 'https://www.leofi.xyz/detail/0' },
+    { profile_name: 'Meme Mogul', profit: 80, sector: 'Meme Coin', link: 'https://www.leofi.xyz/detail/0' },
+    { profile_name: 'NFT Ninja', profit: 55, sector: 'NFT', link: 'https://www.leofi.xyz/detail/0' },
+    { profile_name: 'Chain Champ', profit: 40, sector: 'Layer 1', link: 'https://www.leofi.xyz/detail/0' },
+  ];
+  
+  const tableHeader = '┌─────────────┬────────┬───────────┐\n' +
+                      '│ <b>Profile</b>    │ <b>Profit</b> │ <b>Sector</b>    │\n' +
+                      '├─────────────┼────────┼───────────┤';
+  
+  const tableRows = tableData.map((row, index) => 
+    `│ ${row.profile_name.padEnd(11)} │ ${(row.profit + '%').padStart(6)} │ ${row.sector.padEnd(9)} │`
+  ).join('\n');
+  
+  const tableFooter = '\n└─────────────┴────────┴───────────┘';
+  
+  const formattedTable = `<pre>${tableHeader}\n${tableRows}${tableFooter}</pre>`;
+  
+  const links = tableData.map((row, index) => 
+    `${index + 1}. <a href="${row.link}">${row.profile_name}</a>`
+  ).join('\n');
+  
+  const message = `${formattedTable}\n\nLinks:\n${links}`;
+  
+  ctx.replyWithHTML(message);
 }
 
 export function setupPortfolioHandlers(bot: any) {
