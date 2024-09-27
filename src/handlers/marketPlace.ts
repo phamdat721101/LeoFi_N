@@ -12,7 +12,7 @@ Here you can access our Yield Optimization Marketplace, where you can:
 • Create and manage your custom yield farming strategies
 
 Visit our web app to explore the full functionality:
-🌐 LeoFi Yield Assistant (https://www.leofi.xyz/yield-assistant)
+🌐 LeoFi Yield Assistant (https://www.leofi.xyz/)
 
 What would you like to do?`;
 

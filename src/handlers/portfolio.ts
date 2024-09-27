@@ -32,11 +32,11 @@ export async function handlePortfolio(ctx: BotContext) {
   // await ctx.replyWithPhoto({ source: chartBuffer });
   
   const tableData = [
-    { profile_name: 'DeFi Master', profit: 45, sector: 'DeFi', link: 'https://www.leofi.xyz/detail/0' },
-    { profile_name: 'SoFi Sage', profit: 30, sector: 'SoFi', link: 'https://www.leofi.xyz/detail/0' },
-    { profile_name: 'Meme Mogul', profit: 80, sector: 'Meme Coin', link: 'https://www.leofi.xyz/detail/0' },
-    { profile_name: 'NFT Ninja', profit: 55, sector: 'NFT', link: 'https://www.leofi.xyz/detail/0' },
-    { profile_name: 'Chain Champ', profit: 40, sector: 'Layer 1', link: 'https://www.leofi.xyz/detail/0' },
+    { profile_name: 'DeFi Master', profit: 45, sector: 'DeFi', link: 'https://www.leofi.xyz/' },
+    { profile_name: 'SoFi Sage', profit: 30, sector: 'SoFi', link: 'https://www.leofi.xyz/' },
+    { profile_name: 'Meme Mogul', profit: 80, sector: 'Meme Coin', link: 'https://www.leofi.xyz/' },
+    { profile_name: 'NFT Ninja', profit: 55, sector: 'NFT', link: 'https://www.leofi.xyz/' },
+    { profile_name: 'Chain Champ', profit: 40, sector: 'Layer 1', link: 'https://www.leofi.xyz/' },
   ];
   
   const tableHeader = '┌─────────────┬────────┬───────────┐\n' +

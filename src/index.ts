@@ -81,22 +81,22 @@ bot.hears('Back to Main Menu', (ctx) => {
 
 bot.action('view_signals', async (ctx) => {
   await ctx.answerCbQuery();
-  await ctx.reply('To view and copy signals, please visit our web app: https://www.leofi.xyz/marketplace?tab=signals');
+  await ctx.reply('To view and copy signals, please visit our web app: https://www.leofi.xyz/');
 });
 
 bot.action('view_etfs', async (ctx) => {
   await ctx.answerCbQuery();
-  await ctx.reply('To view and invest in ETFs, please visit our web app: https://www.leofi.xyz/marketplace?tab=etfs');
+  await ctx.reply('To view and invest in ETFs, please visit our web app: https://www.leofi.xyz/');
 });
 
 bot.action('create_signal', async (ctx) => {
   await ctx.answerCbQuery();
-  await ctx.reply('To create a new signal, please visit our web app: https://www.leofi.xyz/marketplace?action=create_signal');
+  await ctx.reply('To create a new signal, please visit our web app: https://www.leofi.xyz/');
 });
 
 bot.action('create_etf', async (ctx) => {
   await ctx.answerCbQuery();
-  await ctx.reply('To create a new ETF, please visit our web app: https://www.leofi.xyz/marketplace?action=create_etf');
+  await ctx.reply('To create a new ETF, please visit our web app: https://www.leofi.xyz/');
 });
 
 bot.on(message('text'), async (ctx) => {

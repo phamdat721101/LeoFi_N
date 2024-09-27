@@ -17,7 +17,7 @@ export async function handlePerformance(ctx: BotContext) {
 | Total    |            | $3,670      | +6.5%      |
 \`\`\``;
 
-  const dashboardLink = 'For detailed performance tracking, please visit our dashboard: [📊 View Dashboard](https://www.leofi.xyz/detail/0)';
+  const dashboardLink = 'For detailed performance tracking, please visit our dashboard: [📊 View Dashboard](https://www.leofi.xyz/)';
   
   const message = `${performanceSummary}\n\n${performanceTable}\n\n${dashboardLink}`;
   
