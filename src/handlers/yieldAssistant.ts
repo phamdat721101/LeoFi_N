@@ -61,7 +61,7 @@ export async function handleYieldAssistant(ctx: BotContext) {
           message += `   🏦 Platform: ${opp.platform}\n`;
           message += `   💸 Estimated Annual Yield: $${(Number(investment) * opp.apy / 100).toFixed(2)}\n\n`;
         });
-        message += "To invest or learn more, use the /invest command followed by the opportunity ID.";
+        message += "Unlock your financial potential with LeoFi—explore decentralized asset management and start growing your investments today! Start your virtual investment <a href='https://leofi.xyz'>here</a> 🦁";
         return message;
       };
       
