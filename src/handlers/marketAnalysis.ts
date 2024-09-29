@@ -19,6 +19,13 @@ interface AIAnalysis {
   relatedAssets: string[];
 }
 
+interface TraderProfile {
+  riskTolerance: 'low' | 'medium' | 'high';
+  preferredAssets: string[];
+  tradingStyle: 'day' | 'swing' | 'position';
+  experience: 'beginner' | 'intermediate' | 'advanced';
+}
+
 function simulateMarketData(): MarketData[] {
   // In a real MVP, this would fetch actual market data
   return [
@@ -93,23 +100,156 @@ function performAIAnalysis(data: MarketData): AIAnalysis {
   };
 }
 
+export async function handleRecommendTraderProfile(ctx: BotContext) {
+  const profiles: TraderProfile[] = [
+    {
+      riskTolerance: 'low',
+      preferredAssets: ['BTC', 'ETH', 'USDC'],
+      tradingStyle: 'position',
+      experience: 'beginner'
+    },
+    {
+      riskTolerance: 'medium',
+      preferredAssets: ['ETH', 'SOL', 'ADA', 'DOT'],
+      tradingStyle: 'swing',
+      experience: 'intermediate'
+    },
+    {
+      riskTolerance: 'high',
+      preferredAssets: ['SOL', 'DOT', 'AVAX', 'LINK'],
+      tradingStyle: 'day',
+      experience: 'advanced'
+    }
+  ];
+
+  const randomProfile = profiles[Math.floor(Math.random() * profiles.length)];
+
+  let profileReport = '👤 Recommended Trader Profile (DEMO/SIMULATION)\n\n';
+  profileReport += `Risk Tolerance: ${randomProfile.riskTolerance.toUpperCase()}\n`;
+  profileReport += `Preferred Assets: ${randomProfile.preferredAssets.join(', ')}\n`;
+  profileReport += `Trading Style: ${randomProfile.tradingStyle.charAt(0).toUpperCase() + randomProfile.tradingStyle.slice(1)} Trading\n`;
+  profileReport += `Experience Level: ${randomProfile.experience.charAt(0).toUpperCase() + randomProfile.experience.slice(1)}\n\n`;
+
+  ctx.session.messages.push({ type: 'bot', content: profileReport });
+  await ctx.reply(profileReport, { parse_mode: 'Markdown' });
+}
+
+export async function handleRecommendToken(ctx: BotContext) {
+  const marketData = simulateMarketData();
+  const analyses = marketData.map(performAIAnalysis);
+
+  // Simple AI recommendation based on highest confidence bullish sentiment
+  const recommendedToken = analyses
+    .filter(analysis => analysis.sentiment === 'bullish')
+    .sort((a, b) => b.confidence - a.confidence)[0];
+
+  if (!recommendedToken) {
+    await ctx.reply('No bullish tokens found in the current market analysis.');
+    return;
+  }
+
+  let recommendationReport = '🔮 AI Token Recommendation (DEMO/SIMULATION)\n\n';
+  recommendationReport += `Recommended Token: ${recommendedToken.symbol}\n`;
+  recommendationReport += `Current Price: $${recommendedToken.entryPoint.toFixed(2)}\n`;
+  recommendationReport += `Sentiment: ${recommendedToken.sentiment.toUpperCase()} (${(recommendedToken.confidence * 100).toFixed(0)}%)\n`;
+  recommendationReport += `Recommendation: ${recommendedToken.recommendation}\n`;
+  recommendationReport += `Entry: $${recommendedToken.entryPoint.toFixed(2)} | SL: $${recommendedToken.stopLoss.toFixed(2)} | TP: $${recommendedToken.takeProfit.toFixed(2)}\n\n`;
+  recommendationReport += `Related Assets: ${recommendedToken.relatedAssets.join(', ')}\n\n`;
+
+  ctx.session.messages.push({ type: 'bot', content: recommendationReport });
+  await ctx.reply(recommendationReport, { parse_mode: 'Markdown' });
+}
+
+function generateTraderProfile(analyses: AIAnalysis[]): TraderProfile {
+  const bullishAssets = analyses.filter(a => a.sentiment === 'bullish').map(a => a.symbol);
+  const bearishAssets = analyses.filter(a => a.sentiment === 'bearish').map(a => a.symbol);
+  
+  const riskTolerances: ('low' | 'medium' | 'high')[] = ['low', 'medium', 'high'];
+  const tradingStyles: ('day' | 'swing' | 'position')[] = ['day', 'swing', 'position'];
+  const experiences: ('beginner' | 'intermediate' | 'advanced')[] = ['beginner', 'intermediate', 'advanced'];
+
+  return {
+    riskTolerance: riskTolerances[Math.floor(Math.random() * riskTolerances.length)],
+    preferredAssets: bullishAssets.length > 0 ? bullishAssets : bearishAssets,
+    tradingStyle: tradingStyles[Math.floor(Math.random() * tradingStyles.length)],
+    experience: experiences[Math.floor(Math.random() * experiences.length)]
+  };
+}
+
+function recommendToken(analyses: AIAnalysis[]): AIAnalysis | null {
+  return analyses
+    .filter(analysis => analysis.sentiment === 'bullish')
+    .sort((a, b) => b.confidence - a.confidence)[0] || null;
+}
+
+function formatCurrency(amount: number): string {
+  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
+}
+
+function formatPercentage(value: number): string {
+  return (value * 100).toFixed(2) + '%';
+}
+
 export async function handleMarketAnalysis(ctx: BotContext) {
   const marketData = simulateMarketData();
   const analyses = marketData.map(performAIAnalysis);
 
-  let analysisReport = '🤖 AI Market Analysis Report (DEMO/SIMULATION)\n\n';
+  let analysisReport = '🚀 *Crypto Market Pulse* 🚀\n\n';
   
   analyses.forEach(analysis => {
     const sentimentEmoji = getSentimentEmoji(analysis.sentiment);
-    analysisReport += `${sentimentEmoji} *${analysis.symbol}*\n`;
-    analysisReport += `Price: $${analysis.entryPoint.toFixed(2)}\n`;
-    analysisReport += `Sentiment: ${analysis.sentiment.toUpperCase()} (${(analysis.confidence * 100).toFixed(0)}%)\n`;
-    analysisReport += `Recommendation: ${analysis.recommendation}\n`;
-    analysisReport += `Entry: $${analysis.entryPoint.toFixed(2)} | SL: $${analysis.stopLoss.toFixed(2)} | TP: $${analysis.takeProfit.toFixed(2)}\n\n`;
+    const trendEmoji = analysis.recommendation.includes('Buy') ? '📈' : (analysis.recommendation.includes('Sell') ? '📉' : '➖');
+    
+    analysisReport += `${sentimentEmoji} *${analysis.symbol}* ${trendEmoji}\n`;
+    analysisReport += `💰 Price: ${formatCurrency(analysis.entryPoint)}\n`;
+    analysisReport += `🔮 AI Sentiment: ${analysis.sentiment.toUpperCase()} (${formatPercentage(analysis.confidence)})\n`;
+    analysisReport += `🎯 Recommendation: ${analysis.recommendation}\n`;
+    analysisReport += `📊 Entry: ${formatCurrency(analysis.entryPoint)} | SL: ${formatCurrency(analysis.stopLoss)} | TP: ${formatCurrency(analysis.takeProfit)}\n`;
+    analysisReport += `📈 24h High: ${formatCurrency(marketData.find(data => data.symbol === analysis.symbol)?.high24h || 0)}\n`;
+    analysisReport += `📉 24h Low: ${formatCurrency(marketData.find(data => data.symbol === analysis.symbol)?.low24h || 0)}\n`;
+    analysisReport += `🔗 Related: ${analysis.relatedAssets.join(', ')}\n\n`;
   });
 
-  ctx.session.messages.push({ type: 'bot', content: analysisReport });
-  await ctx.reply(analysisReport, { parse_mode: 'Markdown' });
+  // Generate trader profile recommendation
+  const recommendedProfile = generateTraderProfile(analyses);
+  let profileReport = '👤 *Your Personalized Trader Profile* 👤\n\n';
+  profileReport += `🎭 Risk Appetite: ${recommendedProfile.riskTolerance.toUpperCase()}\n`;
+  profileReport += `💼 Suggested Assets: ${recommendedProfile.preferredAssets.join(', ')}\n`;
+  profileReport += `⏱ Trading Style: ${recommendedProfile.tradingStyle.charAt(0).toUpperCase() + recommendedProfile.tradingStyle.slice(1)} Trading\n`;
+  profileReport += `🏆 Trader Level: ${recommendedProfile.experience.charAt(0).toUpperCase() + recommendedProfile.experience.slice(1)}\n\n`;
+
+  // Generate token recommendation
+  const recommendedToken = recommendToken(analyses);
+  let tokenReport = '🔮 *AI-Powered Token Spotlight* 🔮\n\n';
+  if (recommendedToken) {
+    tokenReport += `🏅 Top Pick: *${recommendedToken.symbol}*\n`;
+    tokenReport += `💰 Current Price: ${formatCurrency(recommendedToken.entryPoint)}\n`;
+    tokenReport += `🔮 AI Sentiment: ${recommendedToken.sentiment.toUpperCase()}\n`;
+    tokenReport += `🎯 Confidence Level: ${formatPercentage(recommendedToken.confidence)}\n`;
+    tokenReport += `💡 Strategy: ${recommendedToken.recommendation}\n`;
+    tokenReport += `📊 Suggested Levels:\n`;
+    tokenReport += `   Entry: ${formatCurrency(recommendedToken.entryPoint)}\n`;
+    tokenReport += `   Stop Loss: ${formatCurrency(recommendedToken.stopLoss)}\n`;
+    tokenReport += `   Take Profit: ${formatCurrency(recommendedToken.takeProfit)}\n`;
+  } else {
+    tokenReport += '🔍 No standout bullish tokens identified in the current market analysis.\n';
+  }
+
+
+  const fullReport = analysisReport + profileReport + tokenReport;
+
+  // Split the message if it's too long for a single Telegram message
+  const maxLength = 4096; // Maximum length of a Telegram message
+  const messages = [];
+  
+  for (let i = 0; i < fullReport.length; i += maxLength) {
+    messages.push(fullReport.slice(i, i + maxLength));
+  }
+
+  // Send each part of the message
+  for (const message of messages) {
+    await ctx.reply(message, { parse_mode: 'Markdown' });
+  }
 }
 
 export async function handleInvestSimulation(ctx: BotContext, amount: number, symbol: string) {
@@ -139,7 +279,6 @@ export async function handleInvestSimulation(ctx: BotContext, amount: number, sy
   simulationResult += `*Simulated Outcome*\n`;
   simulationResult += `Final Value: $${simulatedOutcome.toFixed(2)}\n`;
   simulationResult += `Profit/Loss: ${profit >= 0 ? '✅' : '❌'} $${profit.toFixed(2)}\n\n`;
-  simulationResult += '⚠️ DISCLAIMER: This is a simulated MVP product. Do not use for actual trading decisions.';
 
   ctx.session.messages.push({ type: 'bot', content: simulationResult });
   await ctx.reply(simulationResult, { parse_mode: 'Markdown' });

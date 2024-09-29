@@ -21,8 +21,8 @@ bot.command('start', (ctx) => {
   ctx.reply('Welcome to LeoFi! How can I assist you with your investments today?', {
     reply_markup: {
       keyboard: [
-        [{ text: 'Top Portfolio' }, { text: 'Market Analysis' }],
-        [{ text: 'Performance' }, { text: 'AI Sniper' }],
+        [{ text: 'Top Portfolio' }, { text: 'AI Sniper' }],
+        [{ text: 'Performance' }, { text: 'DeFi Liquidity' }],
         [{ text: 'Yield Assistant' }]
       ],
       resize_keyboard: true,
