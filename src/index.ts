@@ -22,7 +22,7 @@ bot.command('start', (ctx) => {
     reply_markup: {
       keyboard: [
         [{ text: 'Top Portfolio' }, { text: 'Market Analysis' }],
-        [{ text: 'Performance' }, { text: 'DeFi Liquidity' }],
+        [{ text: 'Performance' }, { text: 'AI Sniper' }],
         [{ text: 'Yield Assistant' }]
       ],
       resize_keyboard: true,
@@ -56,7 +56,7 @@ function setupPortfolioHandlers(bot: Telegraf<BotContext>) {
 }
 
 bot.hears('Top Portfolio', handlePortfolio);
-bot.hears('Market Analysis', handleMarketAnalysis);
+bot.hears('AI Sniper', handleMarketAnalysis);
 bot.hears('Performance', handlePerformance);
 // bot.hears('Onboarding', handleOnboarding);
 bot.hears('DeFi Liquidity', handleDeFiLiquidity);
@@ -69,7 +69,7 @@ bot.hears('Back to Main Menu', (ctx) => {
   ctx.reply('What would you like to do?', {
     reply_markup: {
       keyboard: [
-        [{ text: 'Top Portfolio' }, { text: 'Market Analysis' }],
+        [{ text: 'Top Portfolio' }, { text: 'AI Sniper' }],
         [{ text: 'Performance' }, { text: 'DeFi Liquidity' }],
         [ { text: 'Yield Assistant' }]
       ],
