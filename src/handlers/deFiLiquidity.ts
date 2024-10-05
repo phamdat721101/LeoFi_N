@@ -5,6 +5,8 @@ interface LiquidityPool {
   apy: string;
   tvl: string;
   recommended: boolean;
+  volume24h: string;
+  fee: string;
 }
 
 export async function handleDeFiLiquidity(ctx: BotContext) {
@@ -23,10 +25,47 @@ export async function handleDeFiLiquidity(ctx: BotContext) {
   const totalValueLocked = ",245.67";
   const dailyChange = "+2.5%";
   const liquidityPools: LiquidityPool[] = [
-    { name: "ETH/USDC", apy: "5.2%", tvl: ".2B", recommended: true },
-    { name: "BTC/ETH", apy: "4.8%", tvl: "M", recommended: false },
-    { name: "AAVE/USDT", apy: "6.1%", tvl: "M", recommended: true },
-  ];
+    { 
+      name: "APT/USDC", 
+      apy: "7.8%", 
+      tvl: "$450M", 
+      recommended: true,
+      volume24h: "$25M",
+      fee: "0.3%"
+    },
+    { 
+      name: "MOVE/APT", 
+      apy: "12.5%", 
+      tvl: "$180M", 
+      recommended: true,
+      volume24h: "$15M",
+      fee: "0.5%"
+    },
+    { 
+      name: "USDT/USDC", 
+      apy: "3.2%", 
+      tvl: "$800M", 
+      recommended: false,
+      volume24h: "$50M",
+      fee: "0.05%"
+    },
+    { 
+      name: "LayerZero APT", 
+      apy: "9.4%", 
+      tvl: "$120M", 
+      recommended: true,
+      volume24h: "$8M",
+      fee: "0.4%"
+    },
+    { 
+      name: "WBTC/APT", 
+      apy: "6.7%", 
+      tvl: "$95M", 
+      recommended: false,
+      volume24h: "$10M",
+      fee: "0.3%"
+    }
+  ];;
 
   let message = "📊 DeFi Liquidity Performance Summary\n\n";
   message += `💰 Total Value Locked: ${totalValueLocked}\n`;

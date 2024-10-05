@@ -8,14 +8,53 @@ interface LiquidityPool {
 }
 
 export async function handleYieldAssistant(ctx: BotContext) {
-    const opportunities = [
-        { id: 'A', name: 'ETH-USDC LP', type: 'Liquidity Mining', apy: 12.5, platform: 'Uniswap V3' },
-        { id: 'B', name: 'ATOM Staking', type: 'Staking', apy: 15.2, platform: 'Cosmos Hub' },
-        { id: 'C', name: 'BTC-ETH Farming', type: 'Yield Farming', apy: 8.7, platform: 'Curve Finance' },
-        { id: 'D', name: 'DOT Staking', type: 'Staking', apy: 14.0, platform: 'Polkadot' },
-        { id: 'E', name: 'AAVE-ETH LP', type: 'Liquidity Mining', apy: 10.3, platform: 'Balancer' },
-      ];
-      
+      const opportunities = [
+        {
+          id: 'APT-USDC-01',
+          name: 'APT-USDC LP',
+          type: 'Liquidity Mining',
+          apy: 18.5,
+          platform: 'AptosSwap',
+          totalValueLocked: '$5.2M',
+          volume24h: '$1.8M'
+        },
+        {
+          id: 'MOVE-APT-01',
+          name: 'MOVE-APT Farming',
+          type: 'Yield Farming',
+          apy: 22.7,
+          platform: 'MoveX',
+          totalValueLocked: '$3.7M',
+          harvestInterval: '6 hours'
+        },
+        {
+          id: 'APT-STAKE-01',
+          name: 'APT Staking',
+          type: 'Staking',
+          apy: 8.9,
+          platform: 'Aptos Network',
+          totalStaked: '15M APT',
+          lockPeriod: '30 days'
+        },
+        {
+          id: 'USDT-USDC-01',
+          name: 'USDT-USDC LP',
+          type: 'Stable LP',
+          apy: 5.2,
+          platform: 'AptosStable',
+          totalValueLocked: '$10.5M',
+          feeAPR: '2.1%'
+        },
+        {
+          id: 'BTC-APT-01',
+          name: 'BTC-APT Farming',
+          type: 'Cross-chain Yield',
+          apy: 15.8,
+          platform: 'AptosWormhole',
+          totalValueLocked: '$2.9M',
+          rewardsToken: 'WORM'
+        },
+      ];      
       const createAsciiGraph = (selectedOpportunities: any, initialInvestment: any) => {
         const graph = [
           "    [Your Wallet]    ",
