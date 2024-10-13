@@ -36,7 +36,7 @@ import {
 import { Input } from "./ui/input"
 import { Label } from "./ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
-import { Award, BarChart2, DollarSign, TrendingUp, Users, Wallet, ArrowRightLeft, ExternalLink, RefreshCw, Percent } from "lucide-react"
+import { Award, BarChart2, DollarSign, TrendingUp, Users, Wallet, ArrowRightLeft, ExternalLink, RefreshCw, Percent, Globe } from "lucide-react"
 import {
   Table,
   TableBody,
@@ -78,6 +78,8 @@ export default function TraderProfile() {
   const [selectedToken, setSelectedToken] = useState('APT')
   const [tradeType, setTradeType] = useState('buy')
   const [amount, setAmount] = useState('')
+  const [showCrossChainPopup, setShowCrossChainPopup] = useState(false)
+  const [selectedChain, setSelectedChain] = useState('Aptos')
 
   const fadeIn = {
     hidden: { opacity: 0 },
@@ -200,6 +202,12 @@ export default function TraderProfile() {
 
     const response = await window.aptos.signAndSubmitTransaction(transaction);
     alert(`Transaction successfully: ${response.hash}`)
+  }
+
+  const handleCrossChainSwap = () => {
+    console.log(`Initiating cross-chain swap to ${selectedChain}`)
+    // Here you would typically initiate the cross-chain swap process
+    setShowCrossChainPopup(false)
   }
 
   const recommendedTokens = ['APT', 'MOJO', 'TORT', 'HIPPO', 'ZAPT'];
@@ -764,6 +772,62 @@ export default function TraderProfile() {
                   </CardContent>
                 </Card>
               </motion.div>
+            </DialogContent>
+          </Dialog>
+          <Dialog open={showCrossChainPopup} onOpenChange={setShowCrossChainPopup}>
+            <DialogTrigger asChild>
+              <Button variant="outline">
+                <Globe className="mr-2 h-4 w-4" /> Cross-Chain
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Cross-Chain Opportunities</DialogTitle>
+                <DialogDescription>
+                  Explore and execute cross-chain swaps and investments
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div>
+                  <Label htmlFor="chain-select">Select Target Chain</Label>
+                  <Select value={selectedChain} onValueChange={setSelectedChain}>
+                    <SelectTrigger id="chain-select">
+                      <SelectValue placeholder="Select chain" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Ethereum">Ethereum</SelectItem>
+                      <SelectItem value="Binance Smart Chain">Binance Smart Chain</SelectItem>
+                      <SelectItem value="Solana">Solana</SelectItem>
+                      <SelectItem value="Polygon">Polygon</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label htmlFor="cross-chain-amount">Amount</Label>
+                  <Input
+                    id="cross-chain-amount"
+                    type="number"
+                    placeholder="Enter amount"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="cross-chain-token">Token</Label>
+                  <Select>
+                    <SelectTrigger id="cross-chain-token">
+                      <SelectValue placeholder="Select token" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {recommendedTokens.map((token) => (
+                        <SelectItem key={token} value={token}>{token}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <Button onClick={handleCrossChainSwap} className="w-full">
+                  <ArrowRightLeft className="mr-2 h-4 w-4" />
+                  Initiate Cross-Chain Swap
+                </Button>
+              </div>
             </DialogContent>
           </Dialog>
         </CardFooter>
