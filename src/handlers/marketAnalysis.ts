@@ -6,6 +6,8 @@ interface MarketData {
   volume: number;
   high24h: number;
   low24h: number;
+  marketCap: number;
+  change24h: number;
 }
 
 interface AIAnalysis {
@@ -20,20 +22,20 @@ interface AIAnalysis {
 }
 
 interface TraderProfile {
-  riskTolerance: 'low' | 'medium' | 'high';
+  riskTolerance: 'medium-high' | 'high' | 'very-high';
   preferredAssets: string[];
-  tradingStyle: 'day' | 'swing' | 'position';
-  experience: 'beginner' | 'intermediate' | 'advanced';
+  tradingStyle: 'swing' | 'day' | 'scalping';
+  experience: 'intermediate' | 'advanced' | 'expert';
 }
 
 function simulateMarketData(): MarketData[] {
   // In a real MVP, this would fetch actual market data
   return [
-    { symbol: 'BTC', price: 50000, volume: 1000000, high24h: 51000, low24h: 49000 },
-    { symbol: 'ETH', price: 3000, volume: 500000, high24h: 3100, low24h: 2900 },
-    { symbol: 'ADA', price: 2, volume: 750000, high24h: 2.1, low24h: 1.9 },
-    { symbol: 'DOT', price: 30, volume: 250000, high24h: 31, low24h: 29 },
-    { symbol: 'SOL', price: 150, volume: 400000, high24h: 155, low24h: 145 },
+    { symbol: 'GOATZILLA', price: 0.000015, volume: 500000, high24h: 0.000018, low24h: 0.000012, marketCap: 1500000, change24h: 25.0 },
+    { symbol: 'APTDOGE', price: 0.0000025, volume: 750000, high24h: 0.0000028, low24h: 0.0000022, marketCap: 2500000, change24h: -10.7 },
+    { symbol: 'APTPEPE', price: 0.0000075, volume: 600000, high24h: 0.0000080, low24h: 0.0000070, marketCap: 3000000, change24h: 5.3 },
+    { symbol: 'MOONAPT', price: 0.000005, volume: 400000, high24h: 0.0000055, low24h: 0.0000045, marketCap: 1000000, change24h: 11.1 },
+    { symbol: 'APTMOON', price: 0.00001, volume: 550000, high24h: 0.000011, low24h: 0.000009, marketCap: 2000000, change24h: -5.6 },
   ];
 }
 
@@ -82,7 +84,7 @@ function performAIAnalysis(data: MarketData): AIAnalysis {
   }
 
   // Simulated related assets
-  const allAssets = ['BTC', 'ETH', 'ADA', 'DOT', 'SOL', 'LINK', 'XRP', 'UNI', 'AAVE', 'SNX'];
+  const allAssets = ['GOATZILLA', 'APTDOGE', 'APTPEPE', 'MOONAPT', 'APTMOON', 'APT', 'APTOGE', 'APTKITTY', 'APTPUG', 'APTSHIB'];
   const relatedAssets = allAssets
     .filter(asset => asset !== data.symbol)
     .sort(() => 0.5 - Math.random())
@@ -103,22 +105,22 @@ function performAIAnalysis(data: MarketData): AIAnalysis {
 export async function handleRecommendTraderProfile(ctx: BotContext) {
   const profiles: TraderProfile[] = [
     {
-      riskTolerance: 'low',
-      preferredAssets: ['BTC', 'ETH', 'USDC'],
-      tradingStyle: 'position',
-      experience: 'beginner'
-    },
-    {
-      riskTolerance: 'medium',
-      preferredAssets: ['ETH', 'SOL', 'ADA', 'DOT'],
+      riskTolerance: 'medium-high',
+      preferredAssets: ['APT', 'GOATZILLA', 'APTDOGE'],
       tradingStyle: 'swing',
       experience: 'intermediate'
     },
     {
       riskTolerance: 'high',
-      preferredAssets: ['SOL', 'DOT', 'AVAX', 'LINK'],
+      preferredAssets: ['GOATZILLA', 'APTPEPE', 'MOONAPT', 'APTMOON'],
       tradingStyle: 'day',
       experience: 'advanced'
+    },
+    {
+      riskTolerance: 'very-high',
+      preferredAssets: ['APTPEPE', 'MOONAPT', 'APTKITTY', 'APTPUG'],
+      tradingStyle: 'scalping',
+      experience: 'expert'
     }
   ];
 
@@ -161,19 +163,28 @@ export async function handleRecommendToken(ctx: BotContext) {
 }
 
 function generateTraderProfile(analyses: AIAnalysis[]): TraderProfile {
-  const bullishAssets = analyses.filter(a => a.sentiment === 'bullish').map(a => a.symbol);
-  const bearishAssets = analyses.filter(a => a.sentiment === 'bearish').map(a => a.symbol);
-  
-  const riskTolerances: ('low' | 'medium' | 'high')[] = ['low', 'medium', 'high'];
-  const tradingStyles: ('day' | 'swing' | 'position')[] = ['day', 'swing', 'position'];
-  const experiences: ('beginner' | 'intermediate' | 'advanced')[] = ['beginner', 'intermediate', 'advanced'];
+  const profiles: TraderProfile[] = [
+    {
+      riskTolerance: 'medium-high',
+      preferredAssets: ['APT', 'GOATZILLA', 'APTDOGE'],
+      tradingStyle: 'swing',
+      experience: 'intermediate'
+    },
+    {
+      riskTolerance: 'high',
+      preferredAssets: ['GOATZILLA', 'APTPEPE', 'MOONAPT', 'APTMOON'],
+      tradingStyle: 'day',
+      experience: 'advanced'
+    },
+    {
+      riskTolerance: 'very-high',
+      preferredAssets: ['APTPEPE', 'MOONAPT', 'APTKITTY', 'APTPUG'],
+      tradingStyle: 'scalping',
+      experience: 'expert'
+    }
+  ];
 
-  return {
-    riskTolerance: riskTolerances[Math.floor(Math.random() * riskTolerances.length)],
-    preferredAssets: bullishAssets.length > 0 ? bullishAssets : bearishAssets,
-    tradingStyle: tradingStyles[Math.floor(Math.random() * tradingStyles.length)],
-    experience: experiences[Math.floor(Math.random() * experiences.length)]
-  };
+  return profiles[Math.floor(Math.random() * profiles.length)];
 }
 
 function recommendToken(analyses: AIAnalysis[]): AIAnalysis | null {
@@ -208,6 +219,8 @@ export async function handleMarketAnalysis(ctx: BotContext) {
     analysisReport += `📈 24h High: ${formatCurrency(marketData.find(data => data.symbol === analysis.symbol)?.high24h || 0)}\n`;
     analysisReport += `📉 24h Low: ${formatCurrency(marketData.find(data => data.symbol === analysis.symbol)?.low24h || 0)}\n`;
     analysisReport += `🔗 Related: ${analysis.relatedAssets.join(', ')}\n\n`;
+
+    analysisReport += '🔗 [View Token on Pump](https://pump.uptos.xyz/token/0x53551cfb1262616b5037578da6a9ed594e6ae10023fcb662190f1aa9bf772d77::GOATZILLA::GOATZILLA)\n\n';
   });
 
   // Generate trader profile recommendation
