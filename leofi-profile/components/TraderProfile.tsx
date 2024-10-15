@@ -204,9 +204,28 @@ export default function TraderProfile() {
     alert(`Transaction successfully: ${response.hash}`)
   }
 
-  const handleCrossChainSwap = () => {
+  const handleCrossChainSwap = async (e: React.FormEvent) => {
     console.log(`Initiating cross-chain swap to ${selectedChain}`)
     // Here you would typically initiate the cross-chain swap process
+
+    console.log(`${tradeType.toUpperCase()} ${amount} ${selectedToken}`)
+    // Implement actual trading logic here
+
+    const moduleAddress = "0xf1a29176e0690487a0d8e10aec8d681935fe678ddc96165800d5f6f2b25b0c6f"
+    const addr = "0xe8ec9945a78a48452def46207e65a0a4ed6acd400306b977020924ae3652ab85"
+    const symbol = 'PQD'
+    const type = `${addr}::${symbol}::${symbol}`
+    const transaction = {
+      function: `${moduleAddress}::leofi_module::buy`,
+      type: 'entry_function_payload',
+      type_arguments: [type],
+      arguments: [
+        24,
+        11
+      ],
+    };
+    const response = await window.aptos.signAndSubmitTransaction(transaction);
+    alert(`Transaction successfully: ${response.hash}`)
     setShowCrossChainPopup(false)
   }
 
