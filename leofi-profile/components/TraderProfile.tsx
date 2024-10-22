@@ -3,7 +3,10 @@
 declare global {
   interface Window {
     ethereum: {
-      request: (args: { method: string }) => Promise<any>;
+      request: (args: { 
+        method: string,
+        params: any
+       }) => Promise<any>;
     };
     aptos: {
       connect: () => Promise<any>;
@@ -128,29 +131,53 @@ export default function TraderProfile() {
   let txHash: string = "";
 
   const connectWallet = async () => {
-    if ('aptos' in window) {
+    if (window.ethereum) {
       try {
-        // Request connection to Petra wallet
-        const response = await window.aptos.connect();
+        // Request connection to MetaMask wallet
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
         
-        if (response.address) {
+        if (accounts.length > 0) {
           // Set the connected account address
-          setAccount(response.address);
+          setAccount(accounts[0]);
           
           // Get the account balance
-          const resource = await window.aptos.getAccountResources(response.address);
-          const accountResource = resource.find((r) => r.type === '0x1::coin::CoinStore<0x1::aptos_coin::AptosCoin>');
-          if (accountResource) {
-            const balance = accountResource.data.coin.value;
-            setBalance(JSON.stringify(balance / 100000000)); // Convert octas to APT
-          }
+          const balanceHex = await window.ethereum.request({
+            method: 'eth_getBalance',
+            params: [accounts[0], 'latest']
+          });
+          const balance = parseFloat(balanceHex) / Math.pow(10, 18); // Convert Wei to Ether
+          setBalance(balance.toString());
         }
       } catch (error) {
         console.error('Failed to connect wallet:', error);
       }
     } else {
-      console.log('Please install Petra wallet!');
-    }   
+      console.log('Please install MetaMask!');
+    } 
+
+    // if ('aptos' in window) {
+    //   try {
+    //     // Request connection to Petra wallet
+    //     const response = await window.aptos.connect();
+        
+    //     if (response.address) {
+    //       // Set the connected account address
+    //       setAccount(response.address);
+          
+    //       // Get the account balance
+    //       const resource = await window.aptos.getAccountResources(response.address);
+    //       const accountResource = resource.find((r) => r.type === '0x1::coin::CoinStore<0x1::aptos_coin::AptosCoin>');
+    //       if (accountResource) {
+    //         const balance = accountResource.data.coin.value;
+    //         setBalance(JSON.stringify(balance / 100000000)); // Convert octas to APT
+    //       }
+    //     }
+    //   } catch (error) {
+    //     console.error('Failed to connect wallet:', error);
+    //   }
+    // } else {
+    //   console.log('Please install Petra wallet!');
+    // }   
   }
 
   // Helper function to format address for display
@@ -183,25 +210,49 @@ export default function TraderProfile() {
 
   const handleTrade = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    //0xA1F002bf7cAD148a639418D77b93912871901875
+
     console.log(`${tradeType.toUpperCase()} ${amount} ${selectedToken}`)
     // Implement actual trading logic here
 
-    const moduleAddress = "0xf1a29176e0690487a0d8e10aec8d681935fe678ddc96165800d5f6f2b25b0c6f"
-    const addr = "0xe8ec9945a78a48452def46207e65a0a4ed6acd400306b977020924ae3652ab85"
-    const symbol = 'PQD'
-    const type = `${addr}::${symbol}::${symbol}`
-    const transaction = {
-      function: `${moduleAddress}::leofi_module::buy`,
-      type: 'entry_function_payload',
-      type_arguments: [type],
-      arguments: [
-        24,
-        11
-      ],
-    };
+    const contractAddress = "0xA1F002bf7cAD148a639418D77b93912871901875"; // EVM contract address
+    const abi = [ // ABI of the contract function you want to call
+        "function initialize(address initialOwner)"
+    ];
+    
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    const signer = await provider.getSigner();
+    const contract = new ethers.Contract(contractAddress, abi, signer);
 
-    const response = await window.aptos.signAndSubmitTransaction(transaction);
-    alert(`Transaction successfully: ${response.hash}`)
+    try {
+        const tx = await contract.initialize("0x90de83fd2cd4d01660cd6909692568a14661cdf1"); // Call the buy function with parameters
+        await tx.wait(); // Wait for the transaction to be mined
+        alert(`Transaction successful: ${tx.hash}`);
+    } catch (error) {
+        console.error('Transaction failed:', error);
+    }
+
+
+    // console.log(`${tradeType.toUpperCase()} ${amount} ${selectedToken}`)
+    // // Implement actual trading logic here
+
+    // const moduleAddress = "0xf1a29176e0690487a0d8e10aec8d681935fe678ddc96165800d5f6f2b25b0c6f"
+    // const addr = "0xe8ec9945a78a48452def46207e65a0a4ed6acd400306b977020924ae3652ab85"
+    // const symbol = 'PQD'
+    // const type = `${addr}::${symbol}::${symbol}`
+    // const transaction = {
+    //   function: `${moduleAddress}::leofi_module::buy`,
+    //   type: 'entry_function_payload',
+    //   type_arguments: [type],
+    //   arguments: [
+    //     24,
+    //     11
+    //   ],
+    // };
+
+    // const response = await window.aptos.signAndSubmitTransaction(transaction);
+    // alert(`Transaction successfully: ${response.hash}`)
   }
 
   const handleCrossChainSwap = async (e: React.FormEvent) => {
@@ -229,7 +280,7 @@ export default function TraderProfile() {
     setShowCrossChainPopup(false)
   }
 
-  const recommendedTokens = ['APT', 'MOJO', 'TORT', 'HIPPO', 'ZAPT'];
+  const recommendedTokens = ['XRP', 'MOJO', 'TORT', 'HIPPO', 'ZAPT'];
 
   // Mock data for the trading chart
   const tradingChartData = [

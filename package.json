@@ -21,7 +21,8 @@
     "chartjs-node-canvas": "^4.1.6",
     "date-fns": "^2.30.0",
     "lightweight-charts": "^4.2.0",
-    "telegraf": "^4.16.3"
+    "telegraf": "^4.16.3",
+    "xrpl": "^4.0.0"
   },
   "devDependencies": {
     "@types/chart.js": "^2.9.41",
