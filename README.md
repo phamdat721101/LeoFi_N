@@ -11,14 +11,14 @@ LeoFi Bot is an intelligent DeFi assistant designed specifically for the Aptos b
 
 ## Features
 
-- **Aptos-Focused Portfolio Management**: Analyze and optimize your DeFi portfolio across various Aptos-based protocols and tokens.
-- **Real-time Aptos Market Insights**: Get up-to-date information on Aptos token prices, liquidity pools, and yield farming opportunities within the Aptos ecosystem.
-- **Automated Trading Strategies for Aptos**: Set up and execute custom trading strategies based on Aptos market conditions and your risk profile.
-- **Aptos DeFi Protocol Interactions**: Seamlessly interact with popular Aptos-based DeFi protocols directly through the bot.
-- **Risk Assessment for Aptos Investments**: Evaluate the risks associated with different Aptos DeFi investments and receive tailored recommendations.
-- **Gas Fee Optimization for Aptos**: Get suggestions for the best times to execute transactions on the Aptos network to minimize gas fees.
-- **Aptos Ecosystem Support**: Operate within the Aptos blockchain network, with potential for future multi-chain expansion.
-- **Aptos DeFi Educational Resources**: Access a wealth of knowledge about Aptos DeFi and learn about new protocols and strategies specific to the Aptos ecosystem.
+- **Cross-Chain Portfolio Management**: Analyze and optimize your DeFi portfolio across both Aptos-based and EVM-compatible protocols and tokens.
+- **Real-time Market Insights**: Access up-to-date information on token prices, liquidity pools, and yield farming opportunities within both Aptos and EVM-compatible ecosystems.
+- **Automated Trading Strategies**: Set up and execute custom trading strategies based on market conditions and your risk profile for both Aptos and EVM-compatible chains.
+- **Multi-Chain DeFi Protocol Interactions**: Seamlessly interact with popular DeFi protocols across both Aptos and EVM-compatible side-chains directly through the bot.
+- **Risk Assessment for Investments**: Evaluate the risks associated with different DeFi investments on both Aptos and EVM-compatible networks and receive tailored recommendations.
+- **Gas Fee Optimization**: Get suggestions for the best times to execute transactions to minimize gas fees, whether operating on the Aptos network or EVM-compatible side-chains.
+- **Multi-Chain Ecosystem Support**: Operate within both the Aptos blockchain and EVM-compatible side-chains, with potential for further multi-chain expansion.
+- **DeFi Educational Resources**: Access a wealth of knowledge about DeFi across both Aptos and EVM ecosystems and learn about new protocols and strategies specific to each network.
 
 ## Prerequisites
 
