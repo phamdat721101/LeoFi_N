@@ -1,4 +1,4 @@
-# LeoFi Bot: Your Smart Aptos DeFi Assistant
+# LeoFi Bot: Your Smart DeFi Assistant
 
 ![LeoFi Logo](https://hebbkx1anhila5yf.public.blob.vercel-storage.com/LeoFi_4x4-qV8iHK5K8IxONkFo4Fe4Hwu9AwMHf0.jpg)
 
