@@ -16,17 +16,6 @@
 
 // Contract.setProvider(provider)
 
-// const depositOrder = async(req) =>{
-//     let contract = new contractProvider(orderAbi, req.orderContractAddress)
-//     let nonce = await getNonce(leofiCfg.contractOwnerAddr)
-//     try {
-//         let receipt = await contract.methods.depositOrder(req.owner).send(Object.assign(contractParams, {nonce: nonce}));
-//         return receipt
-//     } catch (err) {
-//         return err.message
-//     }
-// }
-
 // exports.createOrder = async (req) =>{
 //     // let contract = new Contract(orderAbi, orderContractAddress);
 //     //set key - orderaddress 
@@ -75,76 +64,4 @@
 
 //     let receipt = await redisClient.zadd(req.portfolioId, req.score, JSON.stringify(orderInfo));
 //     return receipt
-// }
-
-// exports.setPriceOrder = async (req) => {
-//     let orderContract = new Contract(orderAbi, req.orderContractAddress);
-//     let nonce = await getNonce(leofiCfg.contractOwnerAddr)
-//     try {
-//         let receipt = await orderContract.methods.setPriceOrder(req.price, req.symbol).send(Object.assign(contractParams, {nonce: nonce}));
-//         return receipt
-//     } catch (err) {
-//         return err.message
-//     }
-// }
-
-// exports.scanPendingOrder = async (req) =>{
-//     let listOrder = await redisClient.zrangeAsync(req, 0, -1);
-//     return listOrder
-// }
-
-// exports.addWhiteListAddress = async(req) =>{
-//     let orderContract = new contractProvider(orderAbi, req.orderContractAddress)
-//     let nonce = await getNonce(req.adminAddress)
-//     try {
-//         let receipt = await orderContract.methods.addWhiteListAddress(req.adminAddress).send(Object.assign(contractParams, {nonce: nonce}))
-//         return receipt
-//     } catch (err) {
-//         return err.message
-//     }
-// }
-
-// exports.claimProfit = async(req) =>{
-//     let orderContract = new contractProvider(orderAbi, req.orderContractAddress)
-//     let nonce = await getNonce(leofiCfg.contractOwnerAddr)
-//     try {
-//         let receipt = await orderContract.methods.claimProfit(req.sender, req.amount).send(Object.assign(contractParams, {nonce: nonce}))
-//         return receipt
-//     } catch (err) {
-//         return err.message
-//     }
-// }
-
-// exports.payToPool = async(req) =>{
-//     let orderContract = new contractProvider(orderAbi, req.orderContractAddress)
-//     let nonce = await getNonce(leofiCfg.contractOwnerAddr)
-//     try {
-//         let receipt = await orderContract.methods.payToPool(req.amount).send(Object.assign(contractParams, {nonce: nonce}))
-//         return receipt
-//     } catch (err) {
-//         return err.message
-//     }
-// }
-
-// exports.confirmResult = async(req) =>{
-//     let orderContract = new contractProvider(orderAbi, req.orderContractAddress)
-//     let nonce = await getNonce(leofiCfg.contractOwnerAddr)
-//     let price = await getLatestPrice(req.symbol)
-//     //get order info 
-//     let orderInfo
-//     try {
-//         orderInfo = await orderContract.methods.getOrderInfo(req.orderContractAddress).call();
-//     } catch (err) {
-//         return err.message
-//     }
-
-//     console.log("Duration: ", Date.now() - orderInfo.openAt, " -n: ", Date.now(), " -open: ", orderInfo.openAt)
-
-//     try {
-//         let receipt = await orderContract.methods.confirmResult(price[0], parseInt(Date.now()/1000), orderInfo.amount).send(Object.assign(contractParams, {nonce: nonce}))
-//         console.log("Confirm txHash: ", receipt.transactionHash)
-//         return receipt
-//     } catch (err) {
-//         return err.message
-//     }
 // }
