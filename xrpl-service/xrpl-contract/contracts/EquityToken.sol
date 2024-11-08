@@ -17,7 +17,7 @@ contract EquityToken is TokenF {
         initializer(TOKEN_F_STORAGE_SLOT)
     {
         __DiamondAccessControl_init();
-        __DiamondERC20_init("Equity Token", "ET");
+        __DiamondERC20_init("GOLD Asset", "XAU");
         __AgentAccessControl_init();
         __TokenF_init(regulatoryCompliance_, kycCompliance_, initRegulatory_, initKYC_);
     }
